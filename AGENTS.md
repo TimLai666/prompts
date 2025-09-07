@@ -175,3 +175,9 @@
 - Docs: ADR or README updated if behavior or decisions changed.
 - CI: passes lint, type checks, tests; no unintended breaking changes.
 
+**User Preferences**
+- Language: default to Traditional Chinese (繁體中文) with Taiwan usage for all user-facing communication. Keep code identifiers, APIs, and commit messages in English unless the user explicitly requests zh-TW.
+- Bilingual clarity: when introducing domain/tech terms, include the English term on first mention in parentheses; avoid over-translating established terms (API, HTTP, commit, PR).
+- Ask before switching: if the conversation starts in another language or the audience changes (e.g., external docs), confirm language choice with the user.
+- Regional conventions: timezone `Asia/Taipei`; dates `YYYY-MM-DD HH:mm:ss`; currency `NTD` (新台幣); metric units; thousands separator with commas in numeric examples.
+- Documentation stance: this AGENTS.md and general repo docs can remain in English for broader collaboration; add zh-TW summaries on request.
