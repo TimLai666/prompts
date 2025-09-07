@@ -274,6 +274,43 @@
 - Security: secrets safe; inputs validated; authorization enforced.
 - Docs: ADR or README updated if behavior or decisions changed.
 - CI: passes lint, type checks, tests; no unintended breaking changes.
+- Commits: follow Conventional Commits (type(scope)!: subject), clear body/footers.
+
+**Commit Conventions**
+- Standard: Conventional Commits v1.0.0 for readable history, changelogs, and automation.
+- Format: `type(scope)!: subject`
+  - `type`: one of `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert`.
+  - `scope`: optional, lower-kebab. Prefer architectural or feature scopes:
+    - Layers/contexts: `domain`, `app`, `ports`, `adapters`, `infra`, `platform`.
+    - Subsystems: `http`, `db`, `mq`, `cache`, `scheduler`, `logging`, `metrics`, `tracing`.
+    - Languages: `py`, `ts`, `js`, `go` (when the change is language-specific).
+    - Feature modules: e.g., `user`, `order`, `payment`.
+  - `!`: use when introducing a breaking change.
+  - `subject`: imperative, concise, lowercase, no trailing period, ≤ 72 chars.
+- Body (optional but recommended)
+  - Explain the what and why, not restating the diff; wrap at ~72 chars.
+  - Use bullets (`- `) for lists; include benchmarks or evidence for `perf`.
+- Footers
+  - Breaking changes: `BREAKING CHANGE: describe the impact and migration path`.
+  - Issue refs: `Closes #123` `Refs #456` (comma-separated for multiples).
+- Examples
+  - `feat(app-user): register user with email verification`
+  - `fix(adapters-db): map unique violation to conflict error`
+  - `docs: add AGENTS.md user preferences (zh-TW)`
+  - `refactor(domain): extract pricing policy from aggregate`
+  - `perf(app): cache product list query`
+  - `test(ports): add contract tests for MessageBus`
+  - `ci: run mypy/ruff and go vet in pipeline`
+  - `build(go): enable -race for tests`
+  - `chore(deps): bump zod to 3.22.4`
+  - `revert: revert "feat(app-user): register user with email verification"`
+- Monorepo/workspaces guidance
+  - Prefer one logical change per package/context per commit. Avoid cross-cutting mega-commits.
+  - If a single commit spans contexts, pick the most representative scope or split into multiple commits.
+- Merge strategy
+  - Prefer small, atomic commits during development. Squash-merge PRs using a Conventional Commit title if the internal history is noisy.
+- Language preference for commits
+  - Per User Preferences, commit messages are in English by default. If a repo is exclusively zh-TW audience, you may write the body in zh-TW but keep `type`/`scope` and subject keywords in English for tooling compatibility.
 
 **User Preferences**
 - Language: default to Traditional Chinese (繁體中文) with Taiwan usage for all user-facing communication. Keep code identifiers, APIs, and commit messages in English unless the user explicitly requests zh-TW.
