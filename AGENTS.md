@@ -65,6 +65,19 @@
 - Structured logs (JSON) with correlation/trace ids.
 - No swallowed errors; domain errors are modeled, technical errors are observable.
 
+**Visibility & API Surface**
+- Default non-public: keep functions, methods, and modules non-public unless exposure is required by a stable contract. Design a minimal surface area per bounded context.
+- Public-by-need: promote visibility only when a consumer requires it and the API is intended to be stable; document invariants and versioning strategy.
+- Language specifics
+  - Python: prefix non-public functions/methods/modules with a single underscore `_name`. Use `__all__` in `__init__.py` to whitelist exports. Avoid `from module import *`. Use `__name` double underscore only for name-mangling cases, not as access control.
+  - TypeScript/JavaScript: do not export by default. Export only what is part of the public contract from `index.ts`. Use `private` (TS) or `#field` (JS) for class internals. Control package exposure via `package.json#exports` and forbid deep imports with ESLint `no-restricted-imports`.
+  - Go: keep identifiers unexported (lowercase) unless they’re part of the public API; reinforce with `internal/` directories as documented.
+  - Java: prefer package-private or `private/protected`; make classes/methods `public` only when necessary. In JPMS, export only required packages in `module-info.java`.
+  - C#/.NET: use `internal` by default for library code; `public` only for external consumers. Use `InternalsVisibleTo` for tests if needed.
+  - Rust: items are private by default; use `pub(crate)` to limit to crate; carefully curate `pub` surface and avoid blanket re-exports.
+  - Kotlin/Swift: Kotlin prefer `internal` (module-scoped) or `private`; Swift default `internal`, use `public/open` only for library boundaries; narrow with `fileprivate` where useful.
+  - PHP/Ruby: use `private/protected` where possible; for PHP libraries, mark non-public with `@internal` and keep them out of Composer exports; Ruby keep internals undocumented and under non-public namespaces.
+
 **Python Standards**
 - First declaration must include a type annotation (PEP 526).
 - Prefer Python 3.10+ built-in typing syntax over `typing.*`
@@ -254,6 +267,7 @@
 - Contracts: inputs/outputs validated; error envelope consistent and typed.
 - Data: invariants enforced; migrations safe and reversible.
 - Code: follows language standards here; no first-time declarations inside `if/try` that are used outside.
+- Visibility: default non-public; only expose what’s required; Python internals use underscore prefix and `__all__`.
 - Python: first declarations annotated; single type plus Optional only.
 - Tests: unit + relevant contract/integration; deterministic; coverage adequate.
 - Observability: logs with correlationId; metrics/traces for critical paths.
