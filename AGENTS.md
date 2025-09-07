@@ -86,6 +86,10 @@
 - Runtime validation in adapters (e.g., zod) to produce DTOs.
 - `kebab-case` files, `PascalCase` types/classes, `camelCase` variables.
 - Dependency injection via lightweight container or factories; no global singletons.
+- No semicolons
+  - Style: rely on ASI; do not end statements with `;`.
+  - Enforcement: Prettier `{ "semi": false }` and ESLint `"semi": ["error", "never"]`, `"no-extra-semi": "error"`.
+  - ASI safety: when a line starts with `(`, `[`, `` ` ``, `/`, `+`, or `-`, add a leading semicolon, e.g. `;(() => {})()` and `;[1,2].forEach(...)`.
 
 **JavaScript Standards**
 - No semicolons
