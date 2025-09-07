@@ -67,8 +67,13 @@
 
 **Python Standards**
 - First declaration must include a type annotation (PEP 526).
-- A variable must keep a single type for its lifetime, None allowed as the only extra value via `Optional[T]`.
-- Disallow other `Union` forms for variables (use `Optional[T]` only).
+- Prefer Python 3.10+ built-in typing syntax over `typing.*`
+  - Use union `T | None` instead of `Optional[T]`; avoid `Union[...]` except for `T | None` in variable declarations.
+  - Use built-in generics: `list[str]`, `dict[str, int]`, `set[Foo]`, `tuple[int, ...]` instead of `List/Dict/Set/Tuple`.
+  - Keep `typing` for advanced constructs only: `TypedDict`, `Protocol`, `Literal`, `Final`, `ClassVar`, `overload`, `Self` (3.11+), `NotRequired/Required`.
+  - For 3.10/3.11 projects, add `from __future__ import annotations` at module top to avoid forward-ref ordering issues.
+- A variable must keep a single type for its lifetime; `None` is the only additional allowed value (i.e., `T | None`).
+- Disallow other unions for variables (no `A | B` unless `B` is `None`).
 - Do not first declare a variable inside `if`/`try` that is later used outside; declare outside, assign inside.
 - Prefer small functions + early returns to reduce wide-scoped variables.
 - Suggested tooling
@@ -77,7 +82,7 @@
   - ruff for linting
 - Patterns
   - Late init: `x: T; x = compute()`
-  - Optional: `res: Optional[T] = None; res = load()`
+  - Optional: `res: T | None = None; res = load()`
   - Try paths: `cfg: Config; try: cfg = load() except: cfg = default()`
 
 **TypeScript Standards**
