@@ -64,6 +64,7 @@
 - Pure functions for business logic; side-effects live in adapters.
 - Structured logs (JSON) with correlation/trace ids.
 - No swallowed errors; domain errors are modeled, technical errors are observable.
+- No magic strings or numbers: extract to named constants/enums/config; colocate with domain or configuration.
 
 **Visibility & API Surface**
 - Default non-public: keep functions, methods, and modules non-public unless exposure is required by a stable contract. Design a minimal surface area per bounded context.
@@ -268,6 +269,7 @@
 - Data: invariants enforced; migrations safe and reversible.
 - Code: follows language standards here; no first-time declarations inside `if/try` that are used outside.
 - Visibility: default non-public; only expose what’s required; Python internals use underscore prefix and `__all__`.
+- Constants: no magic strings/numbers; use named constants/enums/config.
 - Python: first declarations annotated; single type plus Optional only.
 - Tests: unit + relevant contract/integration; deterministic; coverage adequate.
 - Observability: logs with correlationId; metrics/traces for critical paths.
@@ -275,6 +277,59 @@
 - Docs: ADR or README updated if behavior or decisions changed.
 - CI: passes lint, type checks, tests; no unintended breaking changes.
 - Commits: follow Conventional Commits (type(scope)!: subject), clear body/footers.
+
+**Constants & Magic Values**
+- Ban magic values: do not inline unexplained strings/numbers/regex flags/units. Name them and centralize appropriately.
+- Placement
+  - Domain invariants (limits, statuses): colocate as constants/enums in the domain package/module.
+  - Cross-cutting knobs (timeouts, retries, buffer sizes): put in configuration with sane defaults and env overrides.
+  - Protocol keys (headers, claim names, JSON field names): define once in shared constants; avoid retyping literals.
+- Language guidance
+  - TypeScript/JavaScript: `export const` for constants; prefer `as const` literal objects and string literal unions over numeric enums. Keep header names, event types, and error codes centralized.
+  - Python: module-level `UPPER_SNAKE` constants; use `enum.Enum`/`StrEnum` (3.11+) or `Literal` for finite sets; mark constants `Final` when applicable.
+  - Go: `const` and typed aliases; group with `iota` when meaningful; expose through small helper packages; avoid stray string keys.
+  - Java/C#: `public static final`/`static readonly` in dedicated classes; use real enums for discrete sets.
+  - SQL/config: keep environment-specific values out of code; inject via config with validation.
+- Exceptions
+  - Obvious mathematical literals (`0`, `1`, `-1`) may be inline when idiomatic and self-evident; otherwise, prefer a named constant or inline comment explaining the value.
+
+**Engineering Excellence**
+- Engineering mindset
+  - Problem-first: define success metrics before choosing solutions.
+  - Trade-offs: record options and consequences via ADRs.
+  - Small steps: incremental, reversible changes with feature flags when needed.
+  - Observability by design: decide logs/metrics/traces at design time.
+- Code quality
+  - Readability first: straight-line logic, single abstraction level, one responsibility per file.
+  - Clear boundaries: domain and I/O are separate; schemas and error models at edges.
+  - Consistency: follow this AGENTS.md (JS/TS no semicolons; Python 3.10+ typing; Go `internal/`).
+  - Tests: unit (many), contract (ports), integration (adapters), e2e (smoke); factories/mothers for data.
+- Reliability & operations
+  - Timeouts/retries/circuit-breaking/bulkheads; assume remote calls fail.
+  - Safe deploys: blue/green or canary; two-phase data migrations; backups.
+  - Runbooks: 5-minute actionable guides; blameless postmortems after incidents.
+- Performance & scalability
+  - Data-centric: indexes, avoid N+1, batch/stream, caching with clear invalidation.
+  - Backpressure: queues, rate limits, and leak-free concurrency.
+  - Cost awareness: monitor per-request cost and cold starts.
+- Security & privacy
+  - Least privilege for DB/cloud; network segmentation.
+  - Secrets management, rotation, and log scrubbing.
+  - Validate input/encode output; secure headers/CSP; sensitive-data handling and compliance.
+- Collaboration & process
+  - Clear PRs: why, how to verify, risks, rollback.
+  - Code review: boundaries, error handling, tests, observability, compatibility.
+  - Estimation and risk: spikes for uncertainty; list known unknowns and blockers.
+  - Dependency hygiene: upgrades, SBOM, supply-chain scanning; reproducible builds.
+- Red flags
+  - Hidden coupling and deep imports; relying on luck (no timeouts/monitoring).
+  - Mega PRs and mass renames without necessity.
+  - Tests that overfit implementations and mask poor design.
+- Daily habits
+  - Add minimal tests and observability with each change.
+  - Read ADRs/AGENTS.md/README before modifying; keep consistent.
+  - Conventional commits with clear subjects.
+  - Rehearse rollback paths (data/deploy/flags).
 
 **Commit Conventions**
 - Standard: Conventional Commits v1.0.0 for readable history, changelogs, and automation.
