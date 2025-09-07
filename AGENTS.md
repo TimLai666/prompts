@@ -87,6 +87,42 @@
 - `kebab-case` files, `PascalCase` types/classes, `camelCase` variables.
 - Dependency injection via lightweight container or factories; no global singletons.
 
+**Go Standards**
+- Encapsulation via `internal/`
+  - Place any package not intended for public use under `internal/`. Only code within the same module can import it.
+  - Expose the smallest possible API; avoid `pkg/` unless you intentionally publish stable packages. Prefer keeping everything in `internal/` and wiring from `cmd/`.
+  - Suggested modular monolith layout:
+    - `cmd/api/main.go` (composition root; wires dependencies)
+    - `internal/<context>/{domain,app,ports,adapters,infra}`
+    - `internal/platform/{config,db,http,mq,cache,logging,metrics}`
+    - `pkg/` (optional; only for stable public packages)
+- Layering and dependencies
+  - `domain` is pure Go (no HTTP/DB). `app` orchestrates use cases and transactions. `ports` define interfaces consumed by `app`. `adapters` implement ports. `infra` holds technical setup.
+  - Main functions in `cmd/` assemble concrete adapters and pass them into `app` constructors.
+- Interfaces and DI
+  - Define interfaces in the consumer package (usually `app`); avoid creating interfaces for every struct. Accept concrete types until an abstraction is needed.
+  - Prefer constructor injection; no global singletons. Optional: use `google/wire` for wiring, but keep graphs small.
+- Errors
+  - Return errors, don’t panic (except truly unrecoverable init). Wrap with `%w` (`fmt.Errorf("...: %w", err)`), use `errors.Is/As`.
+  - Model domain errors as values; map to transport errors at adapters.
+- Concurrency and context
+  - Always accept `context.Context` as the first parameter for I/O-bound functions; don’t store contexts in structs.
+  - Use `errgroup` for concurrent workflows; ensure cancellation; avoid goroutine leaks; set deadlines/timeouts at boundaries.
+- Logging and observability
+  - Use structured logging (e.g., `log/slog` in Go 1.21+); include correlation/trace IDs.
+  - Expose RED/USE metrics; instrument critical paths; propagate trace context.
+- Testing
+  - Prefer table-driven tests; include `-race` in CI. Separate slow/integration tests with build tags (e.g., `//go:build integration`).
+  - Mock at port boundaries (handwritten fakes or `mockgen`); avoid mocking concrete types.
+- Style and linting
+  - Package names: short, no stutter (e.g., `user`, not `userpkg`).
+  - Run `go vet`, `staticcheck`, `golangci-lint` (e.g., `errcheck`, `revive`, `gofumpt`, `gocritic`). Enforce `go fmt`/`gofumpt`.
+- Versioning and modules
+  - Target a recent Go version (e.g., 1.21/1.22). Use `go.work` for multi-module repos when needed.
+  - Keep `CGO_ENABLED=0` where possible for simpler builds.
+- Control-flow rule alignment
+  - If a value computed in an `if` block is needed after the block, declare the variable before the block (e.g., `var u *User; if cond { u = ... } use(u)`).
+
 **Error Handling**
 - Map domain errors to explicit, typed results.
 - Map technical errors to structured logs and correct HTTP status codes.
