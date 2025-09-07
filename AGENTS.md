@@ -12,6 +12,7 @@
 - Evolution-first: small steps, reversible decisions, record ADRs.
 - Operational parity: logs/metrics/traces are first-class.
 - Quality through simplicity: smallest sufficient solution, avoid incidental complexity.
+ - High modularity and single source of truth: cohesive modules with minimal public surfaces; one behavior is controlled by one setting.
 
 **Architecture**
 - Layers
@@ -277,6 +278,7 @@
 - Docs: ADR or README updated if behavior or decisions changed.
 - CI: passes lint, type checks, tests; no unintended breaking changes.
 - Commits: follow Conventional Commits (type(scope)!: subject), clear body/footers.
+ - Modularity/Config: cohesive modules, minimal public surfaces; one behavior -> one config; validated with clear precedence.
 
 **Constants & Magic Values**
 - Ban magic values: do not inline unexplained strings/numbers/regex flags/units. Name them and centralize appropriately.
@@ -292,6 +294,24 @@
   - SQL/config: keep environment-specific values out of code; inject via config with validation.
 - Exceptions
   - Obvious mathematical literals (`0`, `1`, `-1`) may be inline when idiomatic and self-evident; otherwise, prefer a named constant or inline comment explaining the value.
+
+**Modularity & Configuration**
+- High cohesion, low coupling
+  - Group related responsibilities into modules with clear boundaries and minimal public API.
+  - Avoid cross-module reach-ins and deep imports; communicate via ports/interfaces.
+- Single source of truth (SSOT) for settings
+  - A single behavior must be governed by a single configuration variable. Avoid multiple flags/vars toggling the same behavior.
+  - Centralize configuration in one place per service/app with a typed schema, defaults, and validation.
+  - Establish a clear precedence order (env vars > config file > defaults) and document it.
+  - Centralize feature flags in one module/service; avoid scattered ad-hoc booleans.
+- Immutability and injection
+  - Load and validate configuration once at startup and inject as immutable dependencies.
+  - If live reload is required, isolate update paths, ensure atomic swaps, and surface versioning/monotonicity.
+- Language guidance
+  - TypeScript/JavaScript: define `Config` types/interfaces; load/validate once (e.g., zod); export a single `config` object.
+  - Python: use dataclasses or pydantic for config; one loader validates and returns a single config object.
+  - Go: define a `Config` struct; load once (env/file/flags), validate, and pass through constructors.
+  - Java/C#: one configuration root type bound via framework; avoid scattered static fields.
 
 **Engineering Excellence**
 - Engineering mindset
