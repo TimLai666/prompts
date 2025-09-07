@@ -87,6 +87,18 @@
 - `kebab-case` files, `PascalCase` types/classes, `camelCase` variables.
 - Dependency injection via lightweight container or factories; no global singletons.
 
+**JavaScript Standards**
+- No semicolons
+  - Style: rely on Automatic Semicolon Insertion (ASI); do not end statements with `;`.
+  - Enforcement: Prettier `{ "semi": false }` and ESLint rules `"semi": ["error", "never"]`, `"no-extra-semi": "error"`.
+  - ASI safety: when a new line starts with `(`, `[`, `` ` ``, `/`, `+`, or `-`, insert a leading semicolon to avoid unintended concatenation, e.g. `;(() => {})()` and `;[1,2].forEach(...)`.
+- Modules and syntax
+  - Prefer ESM (`import`/`export`); in Node, set `"type": "module"` or use `.mjs`.
+  - Keep identifiers and APIs in English; follow the same architectural boundaries as TypeScript (domain/app/ports/adapters/infra).
+- Tooling
+  - Use ESLint with `eslint:recommended` plus rules that mirror the TypeScript section where applicable; format with Prettier (`semi: false`).
+  - Optional: adopt StandardJS conventions while keeping project-specific rules from this AGENTS.md.
+
 **Go Standards**
 - Encapsulation via `internal/`
   - Place any package not intended for public use under `internal/`. Only code within the same module can import it.
