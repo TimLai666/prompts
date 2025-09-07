@@ -139,6 +139,35 @@
 - Control-flow rule alignment
   - If a value computed in an `if` block is needed after the block, declare the variable before the block (e.g., `var u *User; if cond { u = ... } use(u)`).
 
+**Encapsulation Across Languages (Internal-like)**
+- Principle
+  - Treat anything under an `internal`/`_internal`-like path as non-public, unstable API. Only expose stable contracts through ports/adapters or top-level package/module exports.
+  - Enforce boundaries at the package/module level; tests may access internals with explicit allowances, but product code must not.
+- Monorepo/workspaces
+  - Split features into packages/modules. Mark non-publishable ones as private. Expose only via package entry points and exports maps. Avoid deep imports and cross-context internal access.
+- TypeScript/JavaScript
+  - Directory: `src/internal/` for non-public code; never re-export internals from `src/index.ts`.
+  - Control exposure with `package.json#exports` and `typesVersions`; block deep imports. ESLint `no-restricted-imports` to forbid `internal/` from outside.
+  - In monorepos, create separate packages per bounded context; only depend on other packages’ public entry points.
+- Python
+  - Use `_internal/` or `internal/` subpackages; gate exposure with `__all__` and avoid importing internals across bounded contexts.
+  - Packaging: keep internals under the top-level package (e.g., `myapp/_internal/...`) and do not document them; wheel/sdist includes but docs mark as non-API.
+  - Enforce via ruff + custom pre-commit: disallow `from X._internal import ...` in non-test code across contexts.
+- Java
+  - Place non-public APIs under packages named `...internal...`. With JPMS, only `exports` public packages in `module-info.java`.
+  - Prefer package-private visibility by default; only `public` what must be consumed externally.
+- C#/.NET
+  - Use the `internal` modifier for non-public API; expose to tests with `[assembly: InternalsVisibleTo("<TestAssembly>")]`.
+  - Keep internals in separate projects when feasible; only reference public contracts between projects.
+- Rust
+  - Use `pub(crate)` and private modules; group internals under `crate::internal` and avoid re-exporting them from `lib.rs`.
+  - In workspaces, keep crates’ public API minimal; share via dedicated `shared` crates rather than reaching into internals.
+- Kotlin / Swift
+  - Kotlin `internal` is module-scoped—split Gradle modules to bound visibility. Swift: prefer `internal`/`fileprivate` and separate SwiftPM targets to enforce boundaries.
+- PHP / Ruby
+  - PHP: annotate non-public with `@internal` (honored by Psalm/PhpStan); keep internal code outside Composer exports for libraries.
+  - Ruby: keep internal modules/classes undocumented; use `private`/`module_function`; avoid exposing under gem’s public namespace.
+
 **Error Handling**
 - Map domain errors to explicit, typed results.
 - Map technical errors to structured logs and correct HTTP status codes.
