@@ -312,6 +312,15 @@
   - Data-centric: indexes, avoid N+1, batch/stream, caching with clear invalidation.
   - Backpressure: queues, rate limits, and leak-free concurrency.
   - Cost awareness: monitor per-request cost and cold starts.
+  - Memory efficiency (when equally performant): prefer the most memory-compact representation that satisfies correctness and clarity.
+- Memory-efficient representation (language guidance)
+  - General: choose the smallest data type that covers the valid range; avoid oversized containers; minimize unnecessary allocations and copies. Do this only when it doesn’t reduce clarity or harm performance.
+  - Go: pick `uint8/uint16/int32` etc. when ranges are known; prefer `[]byte` over `string` for binary; pass slices and avoid copying; preallocate with `make(len, cap)`; avoid `interface{}` boxing; consider `time.Duration` (`int64`) for time.
+  - Python: prefer `bytes/bytearray/memoryview` for binary; use `tuple` for small immutable sequences; use generators/iterators to avoid large intermediates; consider `__slots__` for high-count lightweight classes; for numeric arrays use `array('b','H','I',...)` or `numpy` dtypes when appropriate.
+  - TypeScript/JavaScript: numbers are IEEE-754 doubles—use `BigInt` only when needed; for binary data use `Uint8Array`/typed arrays; avoid large intermediate arrays (prefer streaming/iterators) and object churn on hot paths.
+  - Java/C#: use primitives (`int`, `short`, `byte`, `double`) instead of boxed types; prefer arrays for dense data; in C# consider `Span<T>/Memory<T>` and `struct`/`readonly struct` for value types.
+  - Rust: choose the smallest integer types; borrow (`&str`, `&[u8]`) instead of owning (`String`, `Vec<u8>`) where lifetime allows; use `Option<NonZero*>` niche optimization; box large enum variants; use `#[repr(u8)]` for small enums when FFI/size matters.
+  - Persistence/API alignment: keep DB columns and wire formats consistent with chosen sizes; avoid surprises from overflow/truncation and cross-language mismatches.
 - Security & privacy
   - Least privilege for DB/cloud; network segmentation.
   - Secrets management, rotation, and log scrubbing.
