@@ -43,6 +43,7 @@
 **API Contracts**
 - REST naming: plural nouns; idempotency for PUT/DELETE; POST supports `Idempotency-Key`.
 - Versioning: `/v1` or Accept header.
+- JSON keys: use snake_case for all keys across REST and event payloads (e.g., `user_id`); do not use camelCase/PascalCase. For third‑party APIs that differ, convert at adapter boundaries and keep internal DTOs snake_case.
 - Error envelope: `{ code, message, details, correlationId }`; stable error codes.
 - Pagination: page/size or cursor with `nextCursor`.
 - Boundary validation: runtime schema validation and static typing.
