@@ -38,7 +38,7 @@
 - `src/shared`: cross-cutting utils (Result/Either, ids, clock, validation)
 - `tests`: unit, contract, integration, e2e
 - `docs`: ADRs, C4 diagrams, runbooks
-- `scripts`: tooling, CI helpers
+ - `scripts`: tooling, CI helpers
 
 **API Contracts**
 - REST naming: plural nouns; idempotency for PUT/DELETE; POST supports `Idempotency-Key`.
@@ -263,6 +263,78 @@
 - When In Doubt
   - Ask clarifying questions with suggested options.
   - Offer a minimal viable path and a safe extension path.
+
+**Research & Writing**
+- Scope
+  - Perform research, organize information, and produce writing deliverables (essays, reports, whitepapers, academic-style papers) in addition to coding tasks.
+  - Synthesize user-provided materials and local repo content; when network is restricted, ask for sources or constraints and proceed with structured assumptions.
+- Outcomes (choose based on request)
+  - Executive summary (5–7 bullets), outline, annotated bibliography, claim–evidence–source matrix, literature review, report/paper draft, slide notes.
+  - Revision artifacts: tracked changes summary, versioned drafts, open questions list, risks/limitations section.
+- Workflow
+  - Clarify: audience, purpose, scope/length, deadline, desired structure (e.g., IMRaD, problem–solution, argumentative), tone, citation style (APA/MLA/Chicago/IEEE), and language (default zh-TW for user-facing).
+  - Collect: request provided sources; enumerate constraints. Capture metadata (title, author, date, link/DOI, access date) for every source.
+  - Extract: build a claim–evidence–source table; record exact quotes with page/section; note contradictions and gaps.
+  - Synthesize: cluster themes, resolve conflicts, decide narrative; propose an outline with headings and key points per section.
+  - Draft: write topic-sentence-first paragraphs, add transitions, keep one idea per paragraph, avoid redundancy; include figures/tables descriptions if needed.
+  - Review: check completeness, accuracy, coherence, tone, and consistency with citation style; run a quick terminology and numbers/units pass (metric, thousands separator, date/timezone per preferences).
+  - Iterate: summarize deltas, ask focused questions, and refine.
+- Writing Standards
+  - Tone: default clear, concise, and neutral; switch to academic/professional/marketing/plain-language on request.
+  - zh-TW usage: write in Traditional Chinese for user-facing content; include English term on first mention; keep identifiers/APIs/commit messages in English.
+  - Structure: headings are descriptive; paragraphs start with a topic sentence; avoid overly long sentences; prefer active voice.
+  - Formatting in this CLI: avoid heavy formatting; short bullet lists are preferred; provide plain-text references.
+  - Figures/Tables: if not rendering, describe content and purpose; include alt-text-like descriptions.
+- Citation & Evidence Policy
+  - Distinguish facts from opinions; qualify uncertain claims; avoid unverifiable statements.
+  - Cite every non-trivial claim; include source metadata (author, year, title, link/DOI if available, access date). When links are not available, include bibliographic details only.
+  - Do not fabricate sources. If a required source is unavailable, state the gap and propose alternatives.
+- Common Output Templates
+  - Executive Summary: purpose, key findings, implications, 1–2 recommendations, next steps.
+  - Report (professional): title, summary, background, methodology, findings, discussion, recommendations, risks/limitations, appendix, references.
+  - Academic-style (IMRaD): abstract, introduction, methods, results, discussion, conclusion, references.
+  - Literature Review Matrix: topic/theme, representative works, key claims, evidence quality, relevance, notes.
+- Writing Task Checklist
+  - Goal defined (audience, purpose, length, tone, structure, citation style, language)
+  - Sources collected and logged; claim–evidence–source table built
+  - Outline agreed; draft produced; references included and formatted
+  - Consistency checks (terms, numbers/units, dates/timezone, zh-TW style)
+  - Limitations and open questions documented; next steps proposed
+
+**Writing Guidelines**
+- Language & Typography (zh-TW)
+  - Default zh-TW for user-facing text; include the English term on first mention; keep code identifiers/APIs in English.
+  - Dates `YYYY-MM-DD HH:mm:ss` (`Asia/Taipei`); numbers use commas as thousands separator; prefer metric units; write number + space + unit (e.g., `10 km`, `3.5 ms`), percent without space (`12%`).
+  - Use concise punctuation; avoid duplicated exclamation/question marks; keep ASCII punctuation for code/paths/URLs.
+- Tone & Voice
+  - Default neutral, clear, professional; switch to academic/marketing/plain-language on request.
+  - Prefer active voice; avoid filler and weasel words (e.g., "just", "very", "some", "various").
+  - Keep sentences ~12–22 words; one idea per sentence; vary rhythm without run-ons.
+- Structure & Readability
+  - Headings are descriptive; keep depth at two levels when possible.
+  - Paragraphs start with a topic sentence; maintain logical transitions; avoid nested lists beyond one level (in this CLI, prefer flat lists).
+  - Lists: 4–6 items, parallel grammar, no trailing punctuation unless full sentences.
+- Evidence & Citations
+  - Choose one style per document (APA/MLA/Chicago/IEEE) during clarification and apply consistently.
+  - In-text examples: APA `(Author, Year)`; IEEE `[1]`. Include page/section for direct quotes.
+  - References include author, year, title, source, link/DOI (if available), and access date. Do not fabricate sources.
+- Quotations & Paraphrasing
+  - Quote verbatim only when necessary; otherwise paraphrase faithfully and cite.
+  - For quotes ≥ 10 words, mark clearly and add page/section; avoid overuse of block quotes.
+- Data & Figures
+  - State source and date with each key number; define sample, scope, and assumptions.
+  - Keep units consistent; round sensibly and note precision; avoid mixing timezones.
+  - Describe figures/tables in text with a one-line purpose and key takeaway when rendering is unavailable.
+- Anti-hallucination & Assumptions
+  - Never invent facts or citations; if a claim lacks a source, mark as assumption or request references.
+  - When offline/restricted, base writing on provided sources; otherwise provide placeholders like "[citation needed]" and list gaps.
+- Editing Passes
+  - Content pass (structure/coverage) → line edit (clarity/style) → copy edit (typos/format).
+  - Deliver a short revision log summarizing what changed and why; list open questions.
+- Consistency Checklist
+  - Audience, purpose, tone, length confirmed; key terms defined consistently (include English on first mention).
+  - Numbers/units/dates consistent; citations complete and uniform; no unsupported claims.
+  - Paragraphs with topic sentences; headings reflect content; bullets parallel and concise.
 
 **PR Checklist**
 - Architecture: respects boundaries; business logic is framework-free.
