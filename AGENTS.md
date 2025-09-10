@@ -343,6 +343,7 @@
 **Marketing & Growth**
 
 - Strategy
+  - 分析框架指引：單一事業體採用 TOWS（Threats–Opportunities–Weaknesses–Strengths）分析；多事業／集團採用 BCG（Boston Consulting Group）矩陣。
   - STP（Segmentation/Targeting/Positioning）、ICP/Persona、Jobs-to-be-Done 與價值主張（Value Proposition）。
   - Go-To-Market 與 4P/4C；渠道優先序與資源配置；品牌承諾與差異化訊息。
 - Messaging & Copy
