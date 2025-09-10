@@ -359,6 +359,7 @@
 - Programs
   - 內容行銷（Content Calendar/SEO 基礎）、社群/合作夥伴（Partner/Influencer）與活動（Campaign）模板。
   - 簡要產出：定位卡、ICP 卡、訊息屋、活動簡報、成效回顧（含下一步建議）。
+  - 當行銷方法包含社群貼文或影音內容，需提供參考的貼文排程表，表中至少包含：貼文類型、主題、發文時間、以及為何選擇該時段發布。
 - Product/Service Analysis Workflow
   - 當使用者想要打造或分析一個產品／服務時，遵循下列順序並逐步產出成果檔：
     1. 商業模式設計（Business Model Canvas）：定義客群、價值主張、關鍵活動與成本／收入結構；產出或更新 `商業模式圖.md`。
