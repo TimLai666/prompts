@@ -23,9 +23,10 @@
   3. 對應層級之 `prompt/`、`prompts/` 內的指示
   4. 其他文件（例如 `README.md`、ADRs）
 - 找到多個可能指示時，採取最小可行行動並回報需要澄清之處。
- - 指示可能為「模板／填空式」內容，包含待填佔位符（例如 `<...>`、`{{...}}`、`[[...]]`）。當單一指示不足以完成任務時，應依上述優先序查找其他指示，先產出所需中間結果，再回填佔位符後執行。
- - 若佔位內容存在歧義或缺漏，採取最小可行步驟並清楚標註假設；必要時提出需澄清項目再繼續，避免擅自臆測。
- - 由多份指示組成的流程，應保持步驟可追溯：簡要記錄「來源指示 → 產出 → 回填目標指示」的對應關係，以便後續驗證與維護。
+- 指示可能為「模板／填空式」內容，包含待填佔位符（例如 `<...>`、`{{...}}`、`[[...]]`）。當單一指示不足以完成任務時，應依上述優先序查找其他指示，先產出所需中間結果，再回填佔位符後執行。
+- 若佔位內容存在歧義或缺漏，採取最小可行步驟並清楚標註假設；必要時提出需澄清項目再繼續，避免擅自臆測。
+- 由多份指示組成的流程，應保持步驟可追溯：簡要記錄「來源指示 → 產出 → 回填目標指示」的對應關係，以便後續驗證與維護。
+- 需要使用者澄清時，請立刻在對話中提出問題並等待確認；不要把問題、TODO 或未決事項放進輸出檔案或模板產出中。
 
 **Mission**
 
@@ -291,6 +292,7 @@
   - Be concise, direct, and friendly. Focus on actionable steps.
   - Prefer plans for multi-step or ambiguous work; keep them short and outcome-driven.
   - Explain what you’re about to do before running commands.
+  - 需要澄清時，請立刻在對話中提出並等待確認；不要把問題、TODO 或未決事項放進輸出檔案或模板產出。
 - Scoping and Edits
   - Respect boundaries in this file. Do the smallest change that solves the problem.
   - Do not refactor unrelated code or rename files unless required to complete the task.
@@ -332,6 +334,7 @@
   - Executive summary (5–7 bullets), outline, annotated bibliography, claim–evidence–source matrix, literature review, report/paper draft, slide notes.
   - Revision artifacts: tracked changes summary, versioned drafts, open questions list, risks/limitations section.
 - Workflow
+  - 當有未明確或阻塞的需求時，請立即在對話中提出澄清並等待回覆；不要把問題、TODO 或未決事項寫入任何輸出檔或模板產出。
   - Clarify: audience, purpose, scope/length, deadline, desired structure (e.g., IMRaD, problem–solution, argumentative), tone, citation style (APA/MLA/Chicago/IEEE), and language (default zh-TW for user-facing).
   - Collect: request provided sources; enumerate constraints. Capture metadata (title, author, date, link/DOI, access date) for every source.
   - Extract: build a claim–evidence–source table; record exact quotes with page/section; note contradictions and gaps.
@@ -565,10 +568,20 @@
 - Bilingual clarity: when introducing domain/tech terms, include the English term on first mention in parentheses; avoid over-translating established terms (API, HTTP, commit, PR).
 - Ask before switching: if the conversation starts in another language or the audience changes (e.g., external docs), confirm language choice with the user.
 - Regional conventions: timezone `Asia/Taipei`; dates `YYYY-MM-DD HH:mm:ss`; currency `NTD` (新台幣); metric units; thousands separator with commas in numeric examples.
- - Documentation stance: this AGENTS.md and general repo docs can remain in English for broader collaboration; add zh-TW summaries on request.
+- Documentation stance: this AGENTS.md and general repo docs can remain in English for broader collaboration; add zh-TW summaries on request.
 
 **模板與分析輸出**
 
 - 模板使用：依指示使用模板時，永遠不要更改模板內容；僅依規定回填佔位符（placeholders）或於模板外附上必要補充。
 - 回填策略：進行回填時，請勿直接在模板檔案上填寫；改以複本或衍生檔案產出，保留原始模板不變（例如將回填後成果另存至 `docs/` 或 `outputs/`）。
 - 分析結果檔案：輸出分析結果時，一律使用 PDF 格式，並以明確、可辨識的檔名命名（例如 `市場分析_2025-09-10.pdf`）。
+
+**Scripts 工具**
+
+- 位置：`scripts/` 目錄提供一些實用腳本與工具，可協助文件輸出與開發工作。
+- 可用工具
+  - `md_to_pdf.py`：將 `docs/*.md` 轉換為 PDF，輸出至 `dist/pdf/`。
+    - 需求：Python 3.10+、`reportlab` 套件；Windows 建議系統具備「微軟正黑體（Microsoft JhengHei）」或在專案 `fonts/` 放入支援 CJK 的字型檔。
+    - 用法：在專案根目錄執行 `python scripts/md_to_pdf.py`。
+    - 範圍：支援標題、段落、清單、程式碼區塊；含管線（`|`）的表格以等寬預排顯示。
+- 擴充：新增腳本時請保持無副作用、設定集中、清楚輸入/輸出；並在本節補充名稱、需求與用法，方便自動化與 CI 使用。
