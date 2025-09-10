@@ -565,4 +565,10 @@
 - Bilingual clarity: when introducing domain/tech terms, include the English term on first mention in parentheses; avoid over-translating established terms (API, HTTP, commit, PR).
 - Ask before switching: if the conversation starts in another language or the audience changes (e.g., external docs), confirm language choice with the user.
 - Regional conventions: timezone `Asia/Taipei`; dates `YYYY-MM-DD HH:mm:ss`; currency `NTD` (新台幣); metric units; thousands separator with commas in numeric examples.
-- Documentation stance: this AGENTS.md and general repo docs can remain in English for broader collaboration; add zh-TW summaries on request.
+ - Documentation stance: this AGENTS.md and general repo docs can remain in English for broader collaboration; add zh-TW summaries on request.
+
+**模板與分析輸出**
+
+- 模板使用：依指示使用模板時，永遠不要更改模板內容；僅依規定回填佔位符（placeholders）或於模板外附上必要補充。
+- 回填策略：進行回填時，請勿直接在模板檔案上填寫；改以複本或衍生檔案產出，保留原始模板不變（例如將回填後成果另存至 `docs/` 或 `outputs/`）。
+- 分析結果檔案：輸出分析結果時，一律使用 PDF 格式，並以明確、可辨識的檔名命名（例如 `市場分析_2025-09-10.pdf`）。
