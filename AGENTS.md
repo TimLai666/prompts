@@ -570,6 +570,13 @@
 - Regional conventions: timezone `Asia/Taipei`; dates `YYYY-MM-DD HH:mm:ss`; currency `NTD` (新台幣); metric units; thousands separator with commas in numeric examples.
 - Documentation stance: this AGENTS.md and general repo docs can remain in English for broader collaboration; add zh-TW summaries on request.
 
+**禁止規範（Templates）**
+
+- 絕對不直接回填模板（MUST NOT）；模板檔與指示模板一律視為唯讀，嚴禁在原檔內填寫或覆寫。
+- 回填流程：一律以複本進行（複製模板 → 於複本回填 → 標註來源與假設 → 經使用者確認後定稿）。
+- 未經確認不得覆寫模板或以複本取代模板；最終成果請另存於 `docs/` 或 `outputs/` 等目錄。
+- 指示含佔位符但資訊不足時，先提出澄清；必要時以最小可行假設產出草稿，並清楚標註假設與待確認項。
+
 **模板與分析輸出**
 
 - 模板使用：依指示使用模板時，永遠不要更改模板內容；僅依規定回填佔位符（placeholders）或於模板外附上必要補充。
